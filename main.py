@@ -3,7 +3,7 @@ Author: Fernando Schettini
 Date: 12/08/2024
 Purpose: Main file to execute the Paxos Agent.
 HOW TO USE: python3 main.py -a <agent_type> -os <own_socket_address> -s <acceptor_sockets>
-            python main.py -a proposer -os 10000 -s 10001,10002
+            python main.py -a proposer -os 127.0.0.1:10000 -s 127.0.0.1:10001,127.0.0.1:10002
 """
 
 import argparse
@@ -19,7 +19,8 @@ def parse_addresses(addresses_str):
             addresses.append((ip, int(port)))
     return addresses
 
-def gen_agent(own_address):
+def gen_agent(args):
+    own_address = parse_addresses(args.own_socket)[0]
     com_addresses = parse_addresses(args.sockets)
     
     if args.agent == "proposer":
@@ -31,9 +32,8 @@ def gen_agent(own_address):
     return agent
 
 def main(args):
-    own_address = parse_addresses(args.own_socket)[0]
-    agent = gen_agent(own_address)
     print(args)
+    agent = gen_agent(args)
     agent.start()
 
 if __name__ == "__main__":

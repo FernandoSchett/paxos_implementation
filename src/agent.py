@@ -2,7 +2,7 @@
 Author: Fernando Schettini
 Date: 09/08/2024
 Purpose: Class model for the agent at Paxos Algorithm. Its should act as proposer, acceptor and learner.
-HOW TO USE: from src.agent import Agent
+HOW TO USE: from .agent import Agent
 """
 
 import socket

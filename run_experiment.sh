@@ -33,9 +33,9 @@ all_learner_addresses=$(IFS=, ; echo "${all_learner_addresses[*]}")
 # Start nodes
 for i in $(seq 0 $(($num_nodes-1)))
 do
-    nohup python3 main.py -a proposer -os ${proposer_add[$i]} -s ${all_acceptor_addresses} > proposer_${i}.log 2>&1 &
-    nohup python3 main.py -a acceptor -os ${acceptor_add[$i]} -s ${all_learner_addresses} > acceptor_${i}.log 2>&1 &
-    nohup python3 main.py -a learner -os ${learner_add[$i]} > learner_${i}.log 2>&1 &
+    nohup python3 main.py -a proposer -os ${proposer_add[$i]} -s ${all_acceptor_addresses} > proposer_${proposer_add[$i]}.log 2>&1 &
+    nohup python3 main.py -a acceptor -os ${acceptor_add[$i]} -s ${all_learner_addresses} > acceptor_${acceptor_add[$i]}.log 2>&1 &
+    nohup python3 main.py -a learner -os ${learner_add[$i]} > learner_${learner_add[$i]}.log 2>&1 &
 done
 
 echo "Proposers: ${proposer_add[@]}"

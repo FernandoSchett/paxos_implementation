@@ -10,7 +10,8 @@ class Proposer(Agent):
         super().__init__(address)
         self.acceptors = acceptors
         self.nodes_number = len(acceptors)
-        self.proposal_number = os.getpid()  
+        self.proposal_number = os.getpid()
+        self.promises_received = 0  
 
     def send_prepare_messages(self):
         message = {
@@ -25,10 +26,9 @@ class Proposer(Agent):
             self.send(message, acceptor)
 
     def start(self):
-
         "TO DO: Implement the Proposer logic"
+
         while True:
-            
             prob = self.nodes_number / 100
             if random.randint(0, 100) < prob:
                 self.send_prepare_messages()
