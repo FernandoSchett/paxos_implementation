@@ -4,6 +4,10 @@
 #   Description: This script runs Paxos Algorithm with a given number of nodes.
 #   How to run: ./run_experiment.sh <num_nodes>
 
+# Kill all running processes
+pkill -f main.py
+sleep 2
+
 num_nodes=$1
 start_port=5000
 
@@ -28,10 +32,9 @@ all_acceptor_addresses=$(IFS=, ; echo "${acceptor_add[*]}")
 # Start nodes
 for i in $(seq 0 $(($num_nodes-1)))
 do
-    nohup python3 main.py -a proposer -os ${proposer_add[$i]} -s ${acceptor_addresses} > proposer_${i}.log 2>&1 &
+    nohup python3 main.py -a proposer -os ${proposer_add[$i]} -s ${all_acceptor_addresses} > proposer_${i}.log 2>&1 &
     nohup python3 main.py -a acceptor -os ${acceptor_add[$i]} > acceptor_${i}.log 2>&1 &
     nohup python3 main.py -a learner -os ${learner_add[$i]} > learner_${i}.log 2>&1 &
-
 done
 
 echo "Proposers: ${proposer_add[@]}"
