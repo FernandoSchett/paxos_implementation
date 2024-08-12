@@ -5,33 +5,21 @@ Purpose: Class model for the agent at Paxos Algorithm. Its should act as propose
 HOW TO USE: from src.agent import Agent
 """
 
-
 import socket
-import random
-import os
+import pickle
 
 class Agent:
-    def __init__(self):
-        self.propose_id = os.getpid()
-        self.start_server()
-        self.nodes_ports = []
-    
-    def send_message(port, message):
-        print("To do ")
+    def __init__(self, address):
+        self.address = address
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind(self.address)
 
-    def start_server(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind(('localhost', 49152))
-        self.sock.listen(1)
-        self.port = self.sock.getsockname()[1]
+    def send(self, message, dest_address):
+        self.socket.sendto(pickle.dumps(message), dest_address)
 
-    def propose(self, value):
-        for node in self.nodes_ports:
-            self.send_message(node, value) 
-    
+    def receive(self):
+        data, addr = self.socket.recvfrom(1024)
+        return pickle.loads(data), addr
+
     def start(self):
-        while True:
-            
-            if():
-                value = random.randint(0, 100)
-                self.propose(value)
+        raise NotImplementedError("O método start deve ser implementado nas classes derivadas.")
