@@ -6,7 +6,6 @@ HOW TO USE: python3 main.py -a <agent_type> -os <own_socket_address> -s <accepto
             python main.py -a proposer -os 10000 -s 10001,10002
 """
 
-
 import argparse
 from src.proposer import Proposer
 from src.acceptor import Acceptor
@@ -21,14 +20,12 @@ def parse_addresses(addresses_str):
     return addresses
 
 def gen_agent(own_address):
+    com_addresses = parse_addresses(args.sockets)
+    
     if args.agent == "proposer":
-        if not args.sockets:
-            print("Proposer precisa de pelo menos um endereço de Acceptor.")
-            return
-        acceptor_addresses = parse_addresses(args.sockets)
-        agent = Proposer(own_address, acceptor_addresses)
+        agent = Proposer(own_address, com_addresses)
     elif args.agent == "acceptor":
-        agent = Acceptor(own_address)
+        agent = Acceptor(own_address, com_addresses)
     elif args.agent == "learner":
         agent = Learner(own_address)
     return agent
@@ -47,7 +44,7 @@ if __name__ == "__main__":
         '--agent',
         type=str,
         choices=['proposer', 'acceptor', 'learner'],
-        help="Agent type: proposer, acceptor , learner",
+        help="Agent type: ['proposer', 'acceptor' , 'learner']",
         required=True
     )
     
@@ -63,7 +60,7 @@ if __name__ == "__main__":
         "-s",
         "--sockets",    
         type=str,
-        help="Acceptor sockets addresses in format: ip:port,ip:port,ip:port...."
+        help="Other sockets addresses in format: ip:port,ip:port,ip:port...."
     )
     
     args = parser.parse_args()
